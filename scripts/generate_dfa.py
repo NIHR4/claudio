@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = 'DFA.xlsx'
+file_path = 'scripts/DFA.xlsx'
 dfa_data = pd.read_excel(file_path)
 
 print("Column names:", dfa_data.columns.tolist())
@@ -12,7 +12,7 @@ def generate_state_code(state_name, transitions):
     code += f'q{state_name}.setName("q{state_name}");\n'
     for symbol, target_state in transitions.items():
         code += f'q{state_name}.addTransition(\'{symbol}\', "q{target_state}");\n'
-    code += f'fsm.addState(q{state_name});'
+    code += f'fsm.addState(q{state_name});\n'
     #code += f'_states.push_back(std::move(q{state_name}));\n\n'
     return code
 
@@ -55,7 +55,7 @@ for index, row in dfa_data.iterrows():
 
 cpp_code = generate_dfa_code(dfa_states, symbols)
 
-output_file = 'generated_dfa_code.cpp'
+output_file = 'scripts/generated_dfa_code.cpp'
 with open(output_file, 'w') as f:
     f.write(cpp_code)
 

@@ -82,6 +82,8 @@
         "csetjmp": "cpp",
         "set": "cpp",
         "unordered_set": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "mutex": "cpp",
+        "xstddef": "cpp"
     }
 }
