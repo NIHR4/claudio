@@ -17,9 +17,9 @@ public:
     ELSE = 8, WHILE = 9, FOR = 10, BREAK = 11, FUNCTION = 12, ROUTINE = 13, 
     RETURN = 14, LPAREN = 15, RPAREN = 16, LBRACE = 17, RBRACE = 18, LBRACKET = 19, 
     RBRACKET = 20, MINUS = 21, PLUS = 22, MUL = 23, DIV = 24, INCREMENT = 25, 
-    DECREMENT = 26, GE = 27, LE = 28, EQ = 29, ASSIGN = 30, NOT = 31, NEQ = 32, 
-    SEMICOLON = 33, COMMA = 34, ID = 35, INT_LITERAL = 36, STRING_LITERAL = 37, 
-    WS = 38, COMMENT = 39
+    DECREMENT = 26, GE = 27, LE = 28, EQ = 29, ASSIGN = 30, GR_THAN = 31, 
+    LS_THAN = 32, NOT = 33, NEQ = 34, SEMICOLON = 35, COMMA = 36, ID = 37, 
+    INT_LITERAL = 38, STRING_LITERAL = 39, WS = 40, COMMENT = 41
   };
 
   explicit claudio(antlr4::CharStream *input);

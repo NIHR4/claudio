@@ -1,96 +1,84 @@
 #include "statement_list.hpp"
 
-std::vector<SymbolMix> parse_rules::matchStatementList(antlr4::Token *nextToken)
-{
-    const auto tokenType = static_cast<size_t>(nextToken->getType());
-    const std::vector<ProductionRule> productionRules{
-        //identifiers
-        {TE::MatchIdentifier, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+
+std::vector<AnySymbol> parse_rules::statementList(antlr4::Token *nextToken) {
+    const std::vector<ProductionRule> productionRules {
+        {TE::matchIdentifier, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //number
-        {TE::MatchDigit, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchNumber, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //operator - 
-        {TE::MatchMinus, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchMinus, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //if-statement
-        {TE::MatchIf, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchIf, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //while-statement
-        {TE::MatchWhile, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchWhile, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //for-statement
-        {TE::MatchFor, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchFor, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //procedure-statement
-        {TE::MatchProcedure, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchProcedure, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //return-statement
-        {TE::MatchReturn, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchReturn, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST),
+                tag::terminal(lexer::claudio::SEMICOLON)
             }; 
         }},
-        //break-statement
-        {TE::MatchBreak, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchBreak, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST),
+                tag::terminal(lexer::claudio::SEMICOLON)
+
             }; 
         }},
-        //left-parenthesees
-        {TE::MatchLParen, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {
-                Symbols::STATEMENT,
-                Symbols::STATEMENT_LIST
+        {TE::matchLParen, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                tag::nonterminal(Symbols::STATEMENT),
+                tag::nonterminal(Symbols::STATEMENT_LIST)
             }; 
         }},
-        //right-brace
-        {TE::MatchRBrace, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {}; 
+        {TE::matchRBrace, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                //empty
+            }; 
         }},
-        //eof
-        {TE::MatchEOF, [](antlr4::Token *) -> std::vector<SymbolMix> {
-                return {}; 
+        {TE::matchEOF, [](antlr4::Token *) -> std::vector<AnySymbol> {
+            return {
+                //empty
+            }; 
         }},
-        
-    
     };
-    // Find the matching production rule.
-    auto it = std::find_if(productionRules.begin(), productionRules.end(),
-    [&tokenType](const ProductionRule& rule) {
-        return rule.matcher(tokenType);
-    });
-
-    throw std::runtime_error("no production rules match");
+    
+    assert(productionRules.size() == 12);
+    
+    return findProductionRule(productionRules, nextToken);
 }
-

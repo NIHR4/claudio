@@ -1,7 +1,7 @@
 #pragma once
-#include "common.hpp"
+#include "../common.hpp"
 
 namespace parse_rules {
-    std::vector<SymbolMix> matchIfStatement(antlr4::Token *nextToken);
-    std::vector<SymbolMix> matchIfStatementPrime(antlr4::Token *nextToken);
+    std::vector<AnySymbol> ifStatement(antlr4::Token *nextToken);
+    std::vector<AnySymbol> ifStatementPrime(antlr4::Token *nextToken);
 }

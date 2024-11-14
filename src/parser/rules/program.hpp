@@ -1,6 +1,6 @@
 #pragma once
-#include "common.hpp"
+#include "../common.hpp"
 
 namespace parse_rules {
-    std::vector<SymbolMix> matchProgram(antlr4::Token *nextToken);
+    std::vector<AnySymbol> program(antlr4::Token *nextToken);
 }
