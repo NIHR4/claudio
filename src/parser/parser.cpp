@@ -5,17 +5,16 @@
 #include <utility>
 #include <variant>
 #include <algorithm>
+//#include <colorconsole.hpp>
 
 #include "../lexer/claudio.h"
-#include "common.hpp"
 
 //parsing rules
 #include "productions/productions.hpp"
 #include "productions/tracer.hpp"
 #include <iostream>
+#include "symbols.hpp"
 #define NOCASCADE(_EXPR_) _EXPR_ ; break;
-
-
 
 class FactoriesMgr{
 private:
@@ -85,6 +84,31 @@ void handleNonTerminals(std::stack<AnySymbol> &stack, AnySymbol &currentSymbol, 
         });
 }
 
+
+void printStack(std::stack<AnySymbol>& stack) {
+    auto sCopy = stack;
+    std::cout << "=======================\n";
+    std::cout << "STACK TRACE:\n";
+    for(int i=0; sCopy.size() > 0; i++){
+        auto element = sCopy.top();
+        if(std::holds_alternative<tag::nterm>(element)) {
+            auto value = std::get<tag::nterm>(element) ;
+            //std::cout << i << ")" << dye::aqua(value.val) << " (NT)\n";
+            std::cout << i << "] " << symbolToString(value.val) << " (NT)\n";
+        }
+        else if(std::holds_alternative<tag::term>(element)) {
+            auto value = std::get<tag::term>(element) ;
+            std::cout << i << "] " << tokenToString(value.val) << " (T)\n";
+
+        }
+
+        sCopy.pop();
+    }
+    std::cout << "=======================\n";
+}
+
+
+
 void parser::parse(antlr4::CommonTokenStream &tokenStream)
 {
     
@@ -95,11 +119,14 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
     symbolStack.push(tag::nterm(Symbols::PROGRAM));
     while (!symbolStack.empty())
     {
+        printStack(symbolStack);
         auto currentSymbol = symbolStack.top();
         symbolStack.pop();
         
+
         //Current token in the input stream
         antlr4::Token *token = tokenStream.get(inputIdx);
+        std::cout << "Lookahead symbol: " << token->getText() << ". Type=" <<  tokenToString(token->getType())<< "\n";
     
         //Parse Non-Terminal Symbols
         if(std::holds_alternative<tag::nterm>(currentSymbol)) {

@@ -1,4 +1,7 @@
+#pragma once
 #include <variant>
+#include <string>
+#include "../lexer/claudio.h"
 
 enum class Symbols{
     START,
@@ -70,3 +73,9 @@ namespace tag
 }
 
 using AnySymbol = std::variant<std::monostate, tag::term,  tag::nterm>; 
+
+
+
+std::string symbolToString(Symbols symbol);
+std::string tokenToString(int token);
+
