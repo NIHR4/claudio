@@ -202,7 +202,7 @@ def generate_cpp_code(data, nonterminals, terminals):
 
 
 
-workbook = load_workbook("C:\\Users\\andre\\Downloads\\FinalParsingTable.xlsm")  # Replace with your file name
+workbook = load_workbook("C:\\Users\\pault\\Desktop\\Compilador\\test1\\ververyfinalparsingtablefrfr2.xlsx")  # Replace with your file name
 sheet = workbook["Parsing Table"]  # Replace with your sheet name
 
 # Define the range to extract from

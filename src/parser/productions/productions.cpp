@@ -33,10 +33,10 @@ std::vector<AnySymbol> Programa::create(size_t token)
     case lex::WHILE:
         return {
             tag::nterm(Symbols::STATEMENT_LIST)};
-    case lex::INT_LITERAL:
+    case lex::STRING_LITERAL:
         return {
             tag::nterm(Symbols::STATEMENT_LIST)};
-    case lex::STRING_LITERAL:
+    case lex::INT_LITERAL:
         return {
             tag::nterm(Symbols::STATEMENT_LIST)};
     case lex::LPAREN:
@@ -90,15 +90,23 @@ std::vector<AnySymbol> Statementlist::create(size_t token)
         return {
             tag::nterm(Symbols::STATEMENT),
             tag::nterm(Symbols::STATEMENT_LIST)};
-    case lex::INT_LITERAL:
-        return {
-            tag::nterm(Symbols::STATEMENT),
-            tag::nterm(Symbols::STATEMENT_LIST)};
     case lex::STRING_LITERAL:
         return {
             tag::nterm(Symbols::STATEMENT),
             tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::INT_LITERAL:
+        return {
+            tag::nterm(Symbols::STATEMENT),
+            tag::nterm(Symbols::STATEMENT_LIST)};
     case lex::LPAREN:
+        return {
+            tag::nterm(Symbols::STATEMENT),
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::INT64:
+        return {
+            tag::nterm(Symbols::STATEMENT),
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::BYTE:
         return {
             tag::nterm(Symbols::STATEMENT),
             tag::nterm(Symbols::STATEMENT_LIST)};
@@ -119,7 +127,9 @@ std::vector<AnySymbol> Statement::create(size_t token)
     case lex::ID:
         return {
             tag::term(lex::ID),
-            tag::nterm(Symbols::STATEMENT_TAIL)};
+            tag::nterm(Symbols::STATEMENT_TAIL),
+            tag::term(lex::SEMICOLON)
+            };
     case lex::BREAK:
         return {
             tag::term(lex::BREAK)};
@@ -138,6 +148,12 @@ std::vector<AnySymbol> Statement::create(size_t token)
     case lex::WHILE:
         return {
             tag::term(lex::WHILE)};
+    case lex::INT64:
+        return {
+            tag::nterm(Symbols::DECLARATION_STATEMENT)};
+    case lex::BYTE:
+        return {
+            tag::nterm(Symbols::DECLARATION_STATEMENT)};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -180,7 +196,12 @@ std::vector<AnySymbol> StatementTail::create(size_t token)
         return {
             tag::term(lex::ASSIGN),
             tag::nterm(Symbols::EXPRESSION)};
+    // case lex::SEMICOLON:
+    //         return {
+    //             tag::term(lex::SEMICOLON)
+    //         };
     }
+    
     throw std::runtime_error{"no symbols matched"};
 }
 
@@ -200,10 +221,10 @@ std::vector<AnySymbol> Expression::create(size_t token)
     case lex::MINUS:
         return {
             tag::nterm(Symbols::UNARY_EXPR)};
-    case lex::INT_LITERAL:
+    case lex::STRING_LITERAL:
         return {
             tag::nterm(Symbols::LITERAL_EXPR)};
-    case lex::STRING_LITERAL:
+    case lex::INT_LITERAL:
         return {
             tag::nterm(Symbols::LITERAL_EXPR)};
     case lex::LPAREN:
@@ -292,7 +313,7 @@ std::vector<AnySymbol> BinaryExpression::create(size_t token)
         return {
             tag::nterm(Symbols::TERM),
             tag::nterm(Symbols::BINARY_EXPR_P)};
-    case lex::STRING_LITERAL:
+    case lex::INT_LITERAL:
         return {
             tag::nterm(Symbols::TERM),
             tag::nterm(Symbols::BINARY_EXPR_P)};
@@ -362,13 +383,13 @@ std::vector<AnySymbol> LiteralExpression::create(size_t token)
     using lex = lexer::claudio;
     switch (token)
     {
-    case lex::INT_LITERAL:
-        return {
-            tag::term(lex::INT_LITERAL),
-            tag::nterm(Symbols::LITERAL_EXPR)};
     case lex::STRING_LITERAL:
         return {
             tag::term(lex::STRING_LITERAL)};
+    case lex::INT_LITERAL:
+        return {
+            tag::term(lex::INT_LITERAL)};
+            //tag::nterm(Symbols::LITERAL_EXPR)};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -387,7 +408,7 @@ std::vector<AnySymbol> Term::create(size_t token)
         return {
             tag::nterm(Symbols::FACTOR),
             tag::nterm(Symbols::TERM_P)};
-    case lex::STRING_LITERAL:
+    case lex::INT_LITERAL:
         return {
             tag::nterm(Symbols::FACTOR),
             tag::nterm(Symbols::TERM_P)};
@@ -432,7 +453,7 @@ std::vector<AnySymbol> Factor::create(size_t token)
     case lex::ID:
         return {
             tag::term(lex::ID)};
-    case lex::STRING_LITERAL:
+    case lex::INT_LITERAL:
         return {
             tag::term(lex::LS_THAN),
             tag::term(lex::GR_THAN)};
@@ -607,6 +628,8 @@ std::vector<AnySymbol> AssignmentStatement::create(size_t token)
             tag::term(lex::ASSIGN),
             tag::nterm(Symbols::EXPRESSION),
             tag::term(lex::SEMICOLON)};
+    default: 
+        return {};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -635,6 +658,8 @@ std::vector<AnySymbol> DeclarationStatement::create(size_t token)
             tag::term(lex::ASSIGN),
             tag::nterm(Symbols::EXPRESSION),
             tag::term(lex::SEMICOLON)};
+    default: 
+        return {};
     }
     throw std::runtime_error{"no symbols matched"};
 }

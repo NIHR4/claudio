@@ -100,7 +100,7 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
         
         //Current token in the input stream
         antlr4::Token *token = tokenStream.get(inputIdx);
-
+    
         //Parse Non-Terminal Symbols
         if(std::holds_alternative<tag::nterm>(currentSymbol)) {
             
@@ -116,6 +116,7 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
                 
             }
         }
+        
     }
     
     if (inputIdx != tokenStream.size()) {

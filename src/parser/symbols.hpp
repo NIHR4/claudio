@@ -31,8 +31,8 @@ enum class Symbols{
     STRING_LITERAL,
     IF_STATEMENT_PRIME,
     PARAMETER_LIST,
-    TYPE
-    
+    TYPE,
+    DECLARATION_STATEMENT
 
 };
 
