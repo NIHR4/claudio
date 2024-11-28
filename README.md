@@ -18,13 +18,13 @@ El lenguaje de Clarion tiene multiples deficiencias, y podria considerarse un "p
 
 ## Objetivos del Proyecto
 - **Objetivo 1:**
-  - Utilizacion de punto y coma para delimitar el fin de un enunciado.
+  - Crear una forma sencilla de utilizar y adaptar código para Clarion.
 - **Objetivo 2:**
   - Declaracion de variables en cualquier punto de una funcion.
 - **Objetivo 3:**
   - Delimitacion de scope utilizando brackets (`{}`).
 - **Objetivo 4**
-  - Evaluacion de multiples expresiones en una sola linea
+  - Procesamiento correcto de tokens en el lenguaje
 
 ## Revisión del Estado del Arte
 - **Compiladores similares:**
