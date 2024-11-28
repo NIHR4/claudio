@@ -2,6 +2,7 @@
   "dependencies": [
     "clipp",
     "spdlog",
-    "color-console"
+    "color-console",
+    "treehh"
   ]
 }

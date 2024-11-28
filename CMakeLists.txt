@@ -30,7 +30,7 @@ include_directories(${ANTLR4_INCLUDE_DIRS})
 
 # Path discovery
 find_path(COLORCONSOLE_INCLUDE_DIRS "colorconsole.hpp")
-
+find_path(TREEHH_INCLUDE_DIRS "treehh/tree.hh")
 
 # Package Discovery
 find_package(clipp CONFIG REQUIRED)
@@ -45,4 +45,4 @@ add_executable(claudio ${SRC})
 target_link_libraries(claudio PRIVATE clipp::clipp antlr4_shared)
 
 # Target includes
-target_include_directories(claudio PRIVATE ${COLORCONSOLE_INCLUDE_DIRS})
+target_include_directories(claudio PRIVATE ${COLORCONSOLE_INCLUDE_DIRS} ${TREEHH_INCLUDE_DIRS})

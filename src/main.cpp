@@ -19,7 +19,7 @@
 #include <clipp.h>
 #include <format>
 #include "parser/parser.hpp"
-
+#include "parser/symbols.hpp"
 
 
 void compile(std::istream& inputStream){
@@ -29,6 +29,13 @@ void compile(std::istream& inputStream){
     lexer::claudio lex(&input);
     antlr4::CommonTokenStream tokenStream(&lex);
     tokenStream.fill();
+
+
+    //Token stream logging
+    std::cout << "Lexer output:\n";
+    for(auto& token : tokenStream.getTokens()){
+        std::cout << std::format("Character: {}. Type={}\n", token->getText(), tokenToString(token->getType()));
+    }
 
 
     //Syntactic analysis
@@ -218,9 +225,7 @@ int main(int argc, char** argv){
     }
 
     #else
-        //inPath = "\\source.clp";
-        //std::ifstream iss(inPath);
-        std::istringstream iss("function banana ( int64 a){ string x = 1;} ");
+        std::istringstream iss("string x = 1;");
     #endif
     
     

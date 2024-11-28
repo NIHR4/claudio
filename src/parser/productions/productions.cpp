@@ -133,7 +133,7 @@ std::vector<AnySymbol> Statementlist::create(size_t token)
             tag::nterm(Symbols::STATEMENT_LIST)};
     case lex::EOF:
         return{
-            tag::term(lex::EOF)
+            //tag::term(lex::EOF)
         };
     }
     throw std::runtime_error{"no symbols matched"};

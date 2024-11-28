@@ -14,7 +14,12 @@
 #include "productions/tracer.hpp"
 #include <iostream>
 #include "symbols.hpp"
-#define NOCASCADE(_EXPR_) _EXPR_ ; break;
+#include "treehh/tree.hh"
+
+template<class... Ts>
+struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
 
 class FactoriesMgr{
 private:
@@ -110,6 +115,52 @@ void printStack(std::stack<AnySymbol>& stack) {
 }
 
 
+/*void printSyntaxTree(tree<AnySymbol>& parseTree) {
+    auto it = parseTree.begin();
+    auto end = parseTree.end();
+    while(it != end) {
+        for(int i=0; i < parseTree.depth(it)-2; ++i ){
+            std::cout << " ";
+        }
+        std::visit(overloaded{
+            [](tag::nterm& arg) { std::cout << symbolToString(arg.val) << "\n"; },
+            [](tag::term& arg) { std::cout << tokenToString(arg.val) << "\n"; },
+            [](auto const& arg ) {}
+        }, *it);
+        ++it;
+    }
+}*/
+
+#include <iostream>
+#include <iomanip>
+
+void printSyntaxTree(tree<AnySymbol>& parseTree) {
+    auto it = parseTree.begin();
+    auto end = parseTree.end();
+    
+    while (it != end) {
+        // Print indentation for the current depth, with vertical bars for structure
+        for (int i = 0; i < parseTree.depth(it) - 1; ++i) {
+            std::cout << "│  ";
+        }
+
+        // Add a connector to indicate the hierarchy
+        if (parseTree.depth(it) > 0) {
+            std::cout << "├──";
+        }
+
+        // Use std::visit to handle different symbol types
+        std::visit(overloaded{
+            [](tag::nterm& arg) { std::cout << "[Non-Terminal] " << symbolToString(arg.val) << "\n"; },
+            [](tag::term& arg) { std::cout << "[Terminal] " << tokenToString(arg.val) << "\n"; },
+            [](auto const& arg) {} // Handle any other cases gracefully
+        }, *it);
+
+        ++it;
+    }
+}
+
+
 
 void parser::parse(antlr4::CommonTokenStream &tokenStream)
 {
@@ -120,6 +171,9 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
     
     symbolStack.push(tag::term(lexer::claudio::EOF));
     symbolStack.push(tag::nterm(Symbols::PROGRAM));
+    tree<AnySymbol> parseTree(symbolStack.top());
+    tree<AnySymbol>::iterator currentNode = parseTree.begin();
+    
     while (inputIdx<tokenStream.size())
     {
         printStack(symbolStack);
@@ -133,11 +187,26 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
         //Parse Non-Terminal Symbols
         if(std::holds_alternative<tag::nterm>(currentSymbol)) {
             
-            handleNonTerminals(symbolStack, currentSymbol, token);
+            if(std::get<tag::nterm>(currentSymbol).val != Symbols::PROGRAM){
+                auto nextIt = parseTree.append_child(currentNode, currentSymbol);
+                currentNode = nextIt;
+            }
+            
+            try{
+                handleNonTerminals(symbolStack, currentSymbol, token);
+            }catch(std::runtime_error& ex) {
+                std::cerr << std::format("\n\nSyntax error in line {}, position {}\n", token->getLine(), token->getCharPositionInLine());
+                throw ex;
+            }
+            
 
         }
         //Parse Terminal Symbols
         else if(std::holds_alternative<tag::term>(currentSymbol)){
+            parseTree.append_child(currentNode, currentSymbol);
+            currentNode--;
+            
+            
             auto terminalSymbol = std::get<tag::term>(currentSymbol).val;
             if(terminalSymbol == token->getType()) {
                 //Skip terminal
@@ -151,7 +220,12 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
     if (inputIdx != tokenStream.size()) {
         throw std::runtime_error("Extra tokens in input.");
     }else{
+        
+        std::cout << "Parse tree:\n";
+        printSyntaxTree(parseTree);
+        
         std::cout << "Syntax is valid!";
+        
     }
 
 

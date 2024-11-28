@@ -88,7 +88,8 @@
         "any": "cpp",
         "condition_variable": "cpp",
         "future": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "queue": "cpp"
     },
     "cmake.debugConfig": {
         "externalConsole": true
