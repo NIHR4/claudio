@@ -1,6 +1,6 @@
 #pragma once
+#include "../symbols.hpp"
 #include <vector>
-#include "../common.hpp"
 
 
 class IBaseProductionFactory {

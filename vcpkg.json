@@ -1,6 +1,7 @@
 {
   "dependencies": [
     "clipp",
-    "spdlog"
+    "spdlog",
+    "color-console"
   ]
 }
