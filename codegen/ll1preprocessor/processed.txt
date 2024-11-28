@@ -1,0 +1,63 @@
+<return_statement> → return [<Expression>];
+<for_statement> → for (<assignment_statement>; <Expression>; <increment_expression>) {<Statement>}
+<binary_operator> → +
+<while_statement> → while (<Expression>) <Statement> <while_statement'>
+<unary_operator> → !
+<StatementList> → <Statement> <StatementList>
+<procedure_statement> → function <identifier> (<parameter_list>) {<Statement>*}
+<Statement> → <for_statement>
+<literal_expression'> → ε
+<if_statement'> → else <Statement>
+<if_statement> → if (<Expression>) <Statement> <if_statement'>
+<Statement_tail> → = <Expression>
+<Expression> → <unary_expression>
+<term> → <factor> <term'>
+<Statement> → <break_statement>
+<type> → string
+<binary_operator> → *
+<identifier> → <letter> <letter_or_digit>*
+<Statement> → <return_statement>
+<increment_expression> → <identifier> ++
+<Programa> → <StatementList>
+<assignment_statement> → <identifier> = <Expression>;
+<Expression_tail> → ε
+<Statement> → <if_statement>
+<unary_expression> → <unary_operator> <Expression>
+<Statement> → <procedure_statement>
+<Statement> → <identifier> <Statement_tail>
+<while_statement'> → ε
+<binary_operator> → !=
+<parameter_list> → ε
+<type> → bool
+<StatementList> → ε
+<term'> → / <factor> <term'>
+<unary_operator> → -
+<binary_operator> → <
+<Statement> → <print_statement>
+<term'> → ε
+<Expression> → <binary_expression>
+<declaration_statement> → <type> <identifier> = <Expression>;
+<Expression_tail> → <binary_operator> <term> <Expression_tail>
+<binary_expression'>  →<binary_operator> <term> <binary_expression'>
+<break_statement> → break;
+<Expression> → <literal_expression>
+<binary_operator> → >
+<binary_operator> → /
+<literal_expression> → <integer_literal> <literal_expression'>
+<type> → int64
+<binary_expression>  →  <term> <binary_expression'>
+<binary_operator> → ==
+<Statement> → <while_statement>
+<Expression> → (<Expression>)
+<unary_operator> → ++
+<factor> → <number>
+<Statement_tail> → ε
+<type> → byte
+<Statement_tail> → <Expression_tail>
+<literal_expression> → <string_literal>  
+<factor> → <identifier>
+<term'> → * <factor> <term'>
+<unary_operator> → --
+<if_statement'> → ε
+<binary_operator> → -
+<type> → float
