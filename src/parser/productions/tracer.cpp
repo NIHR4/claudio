@@ -24,7 +24,7 @@ std::vector<AnySymbol> Tracer::create(size_t token)
     auto prod = _underlyingFactory->create(token);
     if(prod.empty()) {
         std::cout << "ε\n";
-        return { tag::term(lexer::claudio::PLUS) };
+        return { };
     }
     for (AnySymbol& symbol : prod)
     {

@@ -220,7 +220,7 @@ int main(int argc, char** argv){
     #else
         //inPath = "\\source.clp";
         //std::ifstream iss(inPath);
-        std::istringstream iss("x = 10;");
+        std::istringstream iss("function banana ( int64 a){ string x = 1;} ");
     #endif
     
     

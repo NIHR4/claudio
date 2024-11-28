@@ -135,3 +135,8 @@ class ParameterList: public IBaseProductionFactory {
   virtual std::string getName() const override;
   virtual std::vector < AnySymbol > create(size_t token) override;
 };
+
+class Parameter: public IBaseProductionFactory {
+  virtual std::string getName() const override;
+  virtual std::vector < AnySymbol > create(size_t token) override;
+};

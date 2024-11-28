@@ -48,6 +48,15 @@ std::vector<AnySymbol> Programa::create(size_t token)
     case lex::BYTE:
         return {
             tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::STRING:
+        return {
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::BOOL:
+        return {
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::FLOAT:
+        return {
+            tag::nterm(Symbols::STATEMENT_LIST)};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -110,6 +119,22 @@ std::vector<AnySymbol> Statementlist::create(size_t token)
         return {
             tag::nterm(Symbols::STATEMENT),
             tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::STRING:
+        return {
+            tag::nterm(Symbols::STATEMENT),
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::BOOL:
+        return {
+            tag::nterm(Symbols::STATEMENT),
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::FLOAT:
+        return {
+            tag::nterm(Symbols::STATEMENT),
+            tag::nterm(Symbols::STATEMENT_LIST)};
+    case lex::EOF:
+        return{
+            tag::term(lex::EOF)
+        };
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -141,7 +166,7 @@ std::vector<AnySymbol> Statement::create(size_t token)
             tag::nterm(Symbols::PROCEDURE_STATEMENT)};
     case lex::IF:
         return {
-            tag::term(lex::IF)};
+            tag::nterm(Symbols::IF_STATEMENT)};
     case lex::RETURN:
         return {
             tag::term(lex::RETURN)};
@@ -152,6 +177,15 @@ std::vector<AnySymbol> Statement::create(size_t token)
         return {
             tag::nterm(Symbols::DECLARATION_STATEMENT)};
     case lex::BYTE:
+        return {
+            tag::nterm(Symbols::DECLARATION_STATEMENT)};
+    case lex::STRING:
+        return {
+            tag::nterm(Symbols::DECLARATION_STATEMENT)};
+    case lex::FLOAT:
+        return {
+            tag::nterm(Symbols::DECLARATION_STATEMENT)};
+    case lex::BOOL:
         return {
             tag::nterm(Symbols::DECLARATION_STATEMENT)};
     }
@@ -226,7 +260,7 @@ std::vector<AnySymbol> Expression::create(size_t token)
             tag::nterm(Symbols::LITERAL_EXPR)};
     case lex::INT_LITERAL:
         return {
-            tag::nterm(Symbols::LITERAL_EXPR)};
+            tag::nterm(Symbols::BINARY_EXPR)};
     case lex::LPAREN:
         return {
             tag::term(lex::LPAREN),
@@ -351,6 +385,8 @@ std::vector<AnySymbol> BinaryExpressionPrime::create(size_t token)
             tag::nterm(Symbols::BINARY_OP),
             tag::nterm(Symbols::TERM),
             tag::nterm(Symbols::BINARY_EXPR_P)};
+    default:
+    return {};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -386,9 +422,9 @@ std::vector<AnySymbol> LiteralExpression::create(size_t token)
     case lex::STRING_LITERAL:
         return {
             tag::term(lex::STRING_LITERAL)};
-    case lex::INT_LITERAL:
-        return {
-            tag::term(lex::INT_LITERAL)};
+    // case lex::INT_LITERAL:
+    //     return {
+    //         tag::term(lex::INT_LITERAL)};
             //tag::nterm(Symbols::LITERAL_EXPR)};
     }
     throw std::runtime_error{"no symbols matched"};
@@ -436,6 +472,8 @@ std::vector<AnySymbol> TermPrime::create(size_t token)
             tag::term(lex::DIV),
             tag::nterm(Symbols::FACTOR),
             tag::nterm(Symbols::TERM_P)};
+    default:
+        return{};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -455,8 +493,8 @@ std::vector<AnySymbol> Factor::create(size_t token)
             tag::term(lex::ID)};
     case lex::INT_LITERAL:
         return {
-            tag::term(lex::LS_THAN),
-            tag::term(lex::GR_THAN)};
+            tag::term(lex::INT_LITERAL)
+           };
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -478,7 +516,7 @@ std::vector<AnySymbol> IfStatement::create(size_t token)
             tag::nterm(Symbols::EXPRESSION),
             tag::term(lex::RPAREN),
             tag::nterm(Symbols::STATEMENT),
-            tag::term(lex::IF)};
+            tag::nterm(Symbols::IF_STATEMENT_PRIME)};
     }
     throw std::runtime_error{"no symbols matched"};
 }
@@ -658,6 +696,27 @@ std::vector<AnySymbol> DeclarationStatement::create(size_t token)
             tag::term(lex::ASSIGN),
             tag::nterm(Symbols::EXPRESSION),
             tag::term(lex::SEMICOLON)};
+    case lex::STRING:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID),
+            tag::term(lex::ASSIGN),
+            tag::nterm(Symbols::EXPRESSION),
+            tag::term(lex::SEMICOLON)};
+    case lex::BOOL:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID),
+            tag::term(lex::ASSIGN),
+            tag::nterm(Symbols::EXPRESSION),
+            tag::term(lex::SEMICOLON)};
+    case lex::FLOAT:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID),
+            tag::term(lex::ASSIGN),
+            tag::nterm(Symbols::EXPRESSION),
+            tag::term(lex::SEMICOLON)};
     default: 
         return {};
     }
@@ -765,7 +824,17 @@ std::vector<AnySymbol> Type::create(size_t token)
     case lex::BYTE:
         return {
             tag::term(lex::BYTE)};
+    case lex::STRING:
+        return {
+            tag::term(lex::STRING)};
+    case lex::BOOL:
+        return {
+            tag::term(lex::BOOL)};
+    case lex::FLOAT:
+        return {
+            tag::term(lex::FLOAT)};
     }
+    
     throw std::runtime_error{"no symbols matched"};
 }
 
@@ -779,10 +848,55 @@ std::vector<AnySymbol> ParameterList::create(size_t token)
     using lex = lexer::claudio;
     switch (token)
     {
-    case lex::RPAREN:
+    case lex::INT64:
         return {
-
-        };
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID)};
+    case lex::BYTE:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID)};
+    case lex::STRING:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID)};
+    case lex::BOOL:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID)};
+    case lex::FLOAT:
+        return {
+            tag::nterm(Symbols::TYPE),
+            tag::term(lex::ID)};
     }
     throw std::runtime_error{"no symbols matched"};
 }
+
+// std::vector<AnySymbol> Parameter::create(size_t token)
+// {
+//     using lex = lexer::claudio;
+//     switch (token)
+//     {
+//     case lex::INT64:
+//         return {
+//             tag::nterm(Symbols::TYPE),
+//             tag::term(lex::ID)};
+//     case lex::BYTE:
+//         return {
+//             tag::nterm(Symbols::TYPE),
+//             tag::term(lex::ID)};
+//     case lex::STRING:
+//         return {
+//             tag::nterm(Symbols::TYPE),
+//             tag::term(lex::ID)};
+//     case lex::BOOL:
+//         return {
+//             tag::nterm(Symbols::TYPE),
+//             tag::term(lex::ID)};
+//     case lex::FLOAT:
+//         return {
+//             tag::nterm(Symbols::TYPE),
+//             tag::term(lex::ID)};
+//     }
+//     throw std::runtime_error{"no symbols matched for <parameter>"};
+// }

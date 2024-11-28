@@ -19,7 +19,7 @@ public:
     RBRACKET = 20, MINUS = 21, PLUS = 22, MUL = 23, DIV = 24, INCREMENT = 25, 
     DECREMENT = 26, GE = 27, LE = 28, EQ = 29, ASSIGN = 30, GR_THAN = 31, 
     LS_THAN = 32, NOT = 33, NEQ = 34, SEMICOLON = 35, COMMA = 36, ID = 37, 
-    INT_LITERAL = 38, STRING_LITERAL = 39, WS = 40, COMMENT = 41
+    INT_LITERAL = 38, STRING_LITERAL = 39, WS = 40, COMMENT = 41  
   };
 
   explicit claudio(antlr4::CharStream *input);

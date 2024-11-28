@@ -34,6 +34,7 @@ std::string symbolToString(Symbols symbol) {
         case Symbols::IF_STATEMENT_PRIME: return "IF_STATEMENT_PRIME";
         case Symbols::PARAMETER_LIST: return "PARAMETER_LIST";
         case Symbols::TYPE: return "TYPE";
+        case Symbols::DECLARATION_STATEMENT: return "DECLARATION_STATEMENT";
         default: return "UNKNOWN_SYMBOL";
     }
 }

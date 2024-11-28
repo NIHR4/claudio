@@ -48,6 +48,8 @@ private:
         _factories[Symbols::INCREMENT_EXPR] = std::make_unique<Tracer>(std::make_unique<IncrementExpression>());
         _factories[Symbols::TYPE] = std::make_unique<Tracer>(std::make_unique<Type>());
         _factories[Symbols::PARAMETER_LIST] = std::make_unique<Tracer>(std::make_unique<ParameterList>());
+        _factories[Symbols::DECLARATION_STATEMENT] = std::make_unique<Tracer>(std::make_unique<DeclarationStatement>());
+
     }
 
 public:
@@ -112,18 +114,18 @@ void printStack(std::stack<AnySymbol>& stack) {
 void parser::parse(antlr4::CommonTokenStream &tokenStream)
 {
     
+
     std::stack<AnySymbol> symbolStack;
     size_t inputIdx=0;
-
+    
     symbolStack.push(tag::term(lexer::claudio::EOF));
     symbolStack.push(tag::nterm(Symbols::PROGRAM));
-    while (!symbolStack.empty())
+    while (inputIdx<tokenStream.size())
     {
         printStack(symbolStack);
         auto currentSymbol = symbolStack.top();
         symbolStack.pop();
         
-
         //Current token in the input stream
         antlr4::Token *token = tokenStream.get(inputIdx);
         std::cout << "Lookahead symbol: " << token->getText() << ". Type=" <<  tokenToString(token->getType())<< "\n";
