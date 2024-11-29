@@ -21,6 +21,7 @@
 #include "parser/parser.hpp"
 #include "parser/symbols.hpp"
 #include "lexer/symbol_table.hpp"
+#include "lexer/lexer.hpp"
 #include "semantic/decorator.hpp"
 
 
@@ -30,7 +31,7 @@ void compile(std::istream& inputStream){
     
     //Lexical analysis
     antlr4::ANTLRInputStream input(inputStream);
-    lexer::claudio lex(&input);
+    lexer::ClaudioLexer lex(&input);
     antlr4::CommonTokenStream tokenStream(&lex);
     tokenStream.fill();
 
@@ -51,7 +52,7 @@ void compile(std::istream& inputStream){
 
     //Semantic
     AST ast;
-    convertToAST(parseTree, parseTree.begin(), ast);
+    //convertToAST(parseTree, parseTree.begin(), ast);
 
 }
 
