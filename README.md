@@ -37,7 +37,7 @@ Clarion es un lenguaje de codigo cerrado, y no hay manera agregar caracteristica
 
 ## Arquitectura y Diseño del Compilador
 - **Diagrama de bloques:**
-![image]("images\diagramabloques.png")
+![diagramaBloques]("https://github.com/NIHR4/claudio/blob/master/images/diagramabloques.png")
 - **Explicación del flujo de datos:**
 El flujo de datos comienza con la entrada del código fuente en texto plano, que pasa por el análisis léxico para convertirlo en una lista de tokens, identificando palabras clave, identificadores, operadores y literales. Luego, estos tokens son procesados en el análisis sintáctico, donde se verifica que cumplan las reglas gramaticales del lenguaje y se construye un Árbol de Sintaxis Abstracta (AST). Este árbol pasa al análisis semántico, donde se valida la consistencia del programa, incluyendo tipos de datos, alcance de variables y uso correcto de operaciones. Finalmente, el AST validado se utiliza para generar código ejecutable o intermedio, garantizando que el programa es correcto y funcional antes de su ejecución.
 - **Decisiones de diseño:**
