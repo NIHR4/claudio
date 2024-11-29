@@ -52,6 +52,7 @@ El diseño del lenguaje se basa en principios que buscan equilibrio entre simpli
 - **Análisis léxico:** 
   - Tokenización, identificación de palabras clave, operadores, etc.
 - **Ejemplos:**
+  ![diagramaBloques](https://github.com/NIHR4/claudio/blob/473f8dbc22330da1b9fce60238162460ffd97699/images/lexer%20example.png)
 ```
 function MyProcedure() {
   
@@ -176,13 +177,13 @@ Break
 <break_statement> ::= "break" ";"
 ```
 - **Ejemplos:**
-
+  ![Parser](https://github.com/NIHR4/claudio/blob/473f8dbc22330da1b9fce60238162460ffd97699/images/parser%20example.png)
 ## Análisis Semántico
 
 - **Análisis sintáctico:** 
   - Uso de gramáticas y árboles sintácticos.
 
-- **Ejemplos:**
+ 
 
 ## Pruebas y Validación
 
