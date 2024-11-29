@@ -146,7 +146,7 @@ void printSyntaxTree(tree<AnySymbol>& parseTree) {
 
 
 
-void parser::parse(antlr4::CommonTokenStream &tokenStream)
+tree<AnySymbol> parser::parse(antlr4::CommonTokenStream &tokenStream)
 {
     
 
@@ -198,7 +198,7 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
                 
             }
         }
-        
+       
     }
     
     if (inputIdx != tokenStream.size()) {
@@ -211,6 +211,6 @@ void parser::parse(antlr4::CommonTokenStream &tokenStream)
         std::cout << "Syntax is valid!";
         
     }
-
+     return parseTree;
 
 }

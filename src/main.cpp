@@ -21,6 +21,10 @@
 #include "parser/parser.hpp"
 #include "parser/symbols.hpp"
 #include "lexer/symbol_table.hpp"
+#include "semantic/decorator.hpp"
+
+
+
 
 void compile(std::istream& inputStream){
     
@@ -42,12 +46,12 @@ void compile(std::istream& inputStream){
         std::cout << std::format("Character: {}. Type={}\n", token->getText(), tokenToString(token->getType()));
     }
     
-
-
-
     //Syntactic analysis
-    parser::parse(tokenStream);
+    auto parseTree = parser::parse(tokenStream);
 
+    //Semantic
+    AST ast;
+    convertToAST(parseTree, parseTree.begin(), ast);
 
 }
 
@@ -78,7 +82,7 @@ int main(int argc, char** argv){
     }
         std::ifstream iss(inPath);
     #else
-        std::istringstream iss("function foo(int64 arg) { int64 x = arg; }");
+        std::istringstream iss("function foo(int64 arg) { int64 x = \"5\"; int64 y = 5; }");
     #endif
     
     

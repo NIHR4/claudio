@@ -1,6 +1,7 @@
 #pragma once
 #include <antlr4-runtime.h>
-
+#include <treehh/tree.hh>
+#include "symbols.hpp"
 namespace parser {  
-    void parse(antlr4::CommonTokenStream& stream);
+    tree<AnySymbol> parse(antlr4::CommonTokenStream& stream);
 }
