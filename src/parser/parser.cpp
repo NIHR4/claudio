@@ -5,21 +5,15 @@
 #include <utility>
 #include <variant>
 #include <algorithm>
-//#include <colorconsole.hpp>
+#include <iostream>
+#include <iomanip>
 
-#include "../lexer/claudio.h"
-
-//parsing rules
 #include "productions/productions.hpp"
 #include "productions/tracer.hpp"
-#include <iostream>
 #include "symbols.hpp"
 #include "treehh/tree.hh"
+#include "../utils/overload.hpp"
 
-template<class... Ts>
-struct overloaded : Ts... { using Ts::operator()...; };
-template<class... Ts>
-overloaded(Ts...) -> overloaded<Ts...>;
 
 class FactoriesMgr{
 private:
@@ -115,8 +109,8 @@ void printStack(std::stack<AnySymbol>& stack) {
 }
 
 
-#include <iostream>
-#include <iomanip>
+
+
 
 void printSyntaxTree(tree<AnySymbol>& parseTree) {
     auto it = parseTree.begin();

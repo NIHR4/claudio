@@ -7,11 +7,6 @@
 
 #include "exceptions/file_not_open.hpp"
 #include <chrono>
-
-#include "io/normalize.hpp"
-#include "io/nowhitespace.hpp"
-#include "io/line.hpp"
-
 #include "lexer/claudio.h"
 #include "antlr4-runtime.h"
 #include <fstream>
@@ -36,13 +31,11 @@ void compile(std::istream& inputStream){
     tokenStream.fill();
 
 
-    //Lexer stream logging
+    //Lexer output logging
     std::cout << "Lexer output:\n";
-    
     auto symTable = generateSymbolTable(tokenStream.getTokens());
     printSymbolTable(symTable);
     std::cout << "\n\n";
-    
     for(auto& token : tokenStream.getTokens()){
         std::cout << std::format("Character: {}. Type={}\n", token->getText(), tokenToString(token->getType()));
     }
@@ -52,16 +45,13 @@ void compile(std::istream& inputStream){
 
     //Semantic
     AST ast;
+    //AST tree generation crashes the program
     //convertToAST(parseTree, parseTree.begin(), ast);
 
 }
 
 
 #include <Windows.h>
-
-
-
-
 
 int main(int argc, char** argv){
     std::string inPath;
@@ -75,26 +65,25 @@ int main(int argc, char** argv){
     
     //parse command line commands
     
-    #ifndef CLAUDIO_NOT_INTERACTIVE
+ 
     
     if(!clipp::parse(argc, argv, cli)) {
         std::cout << "Incorrect usage:\n" << clipp::make_man_page(cli, "claudio");
         return 0;
     }
-        std::ifstream iss(inPath);
-    #else
-        std::istringstream iss("function foo(int64 arg) { int64 x = \"5\"; int64 y = 5; }");
-    #endif
-    
-    
-    
-    //inPath = R"(C:\Users\andre\Coding\School\Compiladores\claudio\out\build\default\Debug\source.cla)";
+    std::ifstream inputFileStream(inPath);
     
     try{
+        //check the file is open for reading
+        if(inputFileStream.fail()){
+            throw file_not_open{std::format("File '{}' is not open for reading", inPath)};
+        }
+        
+        
         //begin compilation
         using clock = std::chrono::high_resolution_clock;
         auto compStart = clock::now();
-        compile(iss);
+        compile(inputFileStream);
         auto compEnd = clock::now();
         std::cout << "Build succeeded in " << std::chrono::duration_cast<std::chrono::milliseconds>(compEnd-compStart).count() << "ms\n";
         return 0;
