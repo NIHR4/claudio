@@ -115,22 +115,6 @@ void printStack(std::stack<AnySymbol>& stack) {
 }
 
 
-/*void printSyntaxTree(tree<AnySymbol>& parseTree) {
-    auto it = parseTree.begin();
-    auto end = parseTree.end();
-    while(it != end) {
-        for(int i=0; i < parseTree.depth(it)-2; ++i ){
-            std::cout << " ";
-        }
-        std::visit(overloaded{
-            [](tag::nterm& arg) { std::cout << symbolToString(arg.val) << "\n"; },
-            [](tag::term& arg) { std::cout << tokenToString(arg.val) << "\n"; },
-            [](auto const& arg ) {}
-        }, *it);
-        ++it;
-    }
-}*/
-
 #include <iostream>
 #include <iomanip>
 
